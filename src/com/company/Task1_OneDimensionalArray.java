@@ -62,6 +62,13 @@ public class Task1_OneDimensionalArray {
         System.out.println(Arrays.toString(array));
     }
 
+    //This method prints the elements that are bigger than their indeces
+    public static void printBiggers(int[]array) {
+        for(int i = 0; i < array.length; i++) {
+            if(array[i] > i) System.out.println(array[i]);
+        }
+    }
+
     //Tests for the methods above
     public static void main(String[] args) {
         int[] array = {0, -1, 4, 5, -2, 6};
@@ -71,5 +78,6 @@ public class Task1_OneDimensionalArray {
         System.out.println(changeToZ(arrayD, 3));
         System.out.println(Arrays.toString(calculateMembers(arrayD)));
         exchangeMinMax(arrayD);
+        printBiggers(array);
     }
 }
