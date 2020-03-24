@@ -1,6 +1,9 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class Tasks_ArrayOfArray {
 
@@ -141,6 +144,43 @@ public class Tasks_ArrayOfArray {
         return index;
     }
 
+    //This method select positive elements of the main diagonal
+    public static List<Integer> selectPositive(int[][] array) {
+        List<Integer> positive = new ArrayList<>();
+        for(int i = 0; i < array.length; i++) {
+            if(array[i][i] > 0) positive.add(array[i][i]);
+        }
+        return positive;
+    }
+
+    //This method generates a random matrix 10x15, print it and print row numbers with thre or more fives
+    public static void generateRandomMatrix() {
+        int rows = 10;
+        int cols = 20;
+        int[][] matrix = new int[rows][cols];
+        Random random = new Random();
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                matrix[i][j] = random.nextInt(15);
+            }
+        }
+        List<Integer> lucky = new ArrayList<>();
+        for(int i = 0; i < rows; i++) {
+            int fives = 0;
+            for(int j = 0; j < cols; j++) {
+                if(matrix[i][j] == 5) fives++;
+                System.out.print(matrix[i][j] + " ");
+            }
+            if(fives >= 3) lucky.add(i);
+            System.out.println();
+        }
+        System.out.println("Lucky rows: ");
+        for(int i: lucky) System.out.println(i + " ");
+        System.out.println();
+
+
+
+    }
 
     //Test method
     public static void main(String[] args) {
@@ -173,6 +213,7 @@ public class Tasks_ArrayOfArray {
         for(int i = 0; i < array3.length; i++) {
             System.out.println(Arrays.toString(array3[i]));
         }
+        generateRandomMatrix();
     }
 }
 
