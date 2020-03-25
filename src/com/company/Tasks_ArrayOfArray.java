@@ -153,7 +153,7 @@ public class Tasks_ArrayOfArray {
         return positive;
     }
 
-    //This method generates a random matrix 10x15, print it and print row numbers with thre or more fives
+    //This method generates a random matrix 10x15, print it and print row numbers with three or more fives
     public static void generateRandomMatrix() {
         int rows = 10;
         int cols = 20;
@@ -178,8 +178,65 @@ public class Tasks_ArrayOfArray {
         for(int i: lucky) System.out.println(i + " ");
         System.out.println();
 
+    }
 
+    //This method sorts rows
+    public static void sortRows(int[][] array, boolean descend) {
+        for(int i = 0; i < array.length; i++) {
+            Arrays.sort(array[i]);
+            if(descend) {
+                for(int j = 0, k = array[i].length - 1; j < k; j++, k--) {
+                    int t = array[i][j];
+                    array[i][j] = array[i][k];
+                    array[i][k] = t;
+                }
+            }
+            System.out.println(Arrays.toString(array[i]));
+        }
+    }
+    //This method sorts columns
+    public static void sortColumns(int[][] array, boolean descend) {
+        for(int j = 0; j < array[0].length; j++) {
+            int[] t = new int[array.length];
+            for(int i = 0; i < array.length; i++) {
+                t[i] = array[i][j];
+            }
+            Arrays.sort(t);
 
+            if(descend) {
+                for(int i = 0; i < array.length; i++) {
+                    array[i][j] = t[array.length - 1 - i];
+                }
+            }
+            else {
+                for(int i = 0; i < array.length; i++) {
+                    array[i][j] = t[i];
+                }
+            }
+        }
+        for(int i = 0; i < array.length; i++) {
+            System.out.println(Arrays.toString(array[i]));
+        }
+    }
+
+    //This method generates a random matrix of 0 and 1 when number of 1's in the column equals number of column
+    public static int[][] formMatrix(int m, int n) {
+        int[][] matrix = new int[m][n];
+        Random random = new Random();
+        for(int j = 1; j < n; j++) {
+            int count = j;
+            while(count > 0) {
+                int pos = random.nextInt(m);
+                if(matrix[pos][j] == 0) {
+                    matrix[pos][j] = 1;
+                    count--;
+                }
+            }
+        }
+        for(int i = 0; i < m; i++) {
+            System.out.println(Arrays.toString(matrix[i]));
+        }
+        return matrix;
     }
 
     //Test method
@@ -214,6 +271,9 @@ public class Tasks_ArrayOfArray {
             System.out.println(Arrays.toString(array3[i]));
         }
         generateRandomMatrix();
+        sortRows(intArray, true);
+        sortColumns(intArray, false);
+        formMatrix(5, 4);
     }
 }
 
