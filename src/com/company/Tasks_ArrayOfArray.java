@@ -1,9 +1,6 @@
 package com.company;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class Tasks_ArrayOfArray {
 
@@ -144,100 +141,21 @@ public class Tasks_ArrayOfArray {
         return index;
     }
 
-    //This method select positive elements of the main diagonal
-    public static List<Integer> selectPositive(int[][] array) {
-        List<Integer> positive = new ArrayList<>();
+    //The method finds the max value in the array and replaces all odd elements to it
+    public static void findMaxAndReplace(int[][] array) {
+        int max = array[0][0];
         for(int i = 0; i < array.length; i++) {
-            if(array[i][i] > 0) positive.add(array[i][i]);
-        }
-        return positive;
-    }
-
-    //This method generates a random matrix 10x15, print it and print row numbers with three or more fives
-    public static void generateRandomMatrix() {
-        int rows = 10;
-        int cols = 20;
-        int[][] matrix = new int[rows][cols];
-        Random random = new Random();
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
-                matrix[i][j] = random.nextInt(15);
-            }
-        }
-        List<Integer> lucky = new ArrayList<>();
-        for(int i = 0; i < rows; i++) {
-            int fives = 0;
-            for(int j = 0; j < cols; j++) {
-                if(matrix[i][j] == 5) fives++;
-                System.out.print(matrix[i][j] + " ");
-            }
-            if(fives >= 3) lucky.add(i);
-            System.out.println();
-        }
-        System.out.println("Lucky rows: ");
-        for(int i: lucky) System.out.println(i + " ");
-        System.out.println();
-
-    }
-
-    //This method sorts rows
-    public static void sortRows(int[][] array, boolean descend) {
-        for(int i = 0; i < array.length; i++) {
-            Arrays.sort(array[i]);
-            if(descend) {
-                for(int j = 0, k = array[i].length - 1; j < k; j++, k--) {
-                    int t = array[i][j];
-                    array[i][j] = array[i][k];
-                    array[i][k] = t;
-                }
-            }
-            System.out.println(Arrays.toString(array[i]));
-        }
-    }
-    //This method sorts columns
-    public static void sortColumns(int[][] array, boolean descend) {
-        for(int j = 0; j < array[0].length; j++) {
-            int[] t = new int[array.length];
-            for(int i = 0; i < array.length; i++) {
-                t[i] = array[i][j];
-            }
-            Arrays.sort(t);
-
-            if(descend) {
-                for(int i = 0; i < array.length; i++) {
-                    array[i][j] = t[array.length - 1 - i];
-                }
-            }
-            else {
-                for(int i = 0; i < array.length; i++) {
-                    array[i][j] = t[i];
-                }
+            for(int j = 0; j < array[0].length; j++) {
+                if(array[i][j] > max) max = array[i][j];
             }
         }
         for(int i = 0; i < array.length; i++) {
-            System.out.println(Arrays.toString(array[i]));
+            for(int j = 0; j < array[0].length; j++) {
+                if(array[i][j] % 2 == 0) array[i][j] = max;
+            }
         }
     }
 
-    //This method generates a random matrix of 0 and 1 when number of 1's in the column equals number of column
-    public static int[][] formMatrix(int m, int n) {
-        int[][] matrix = new int[m][n];
-        Random random = new Random();
-        for(int j = 1; j < n; j++) {
-            int count = j;
-            while(count > 0) {
-                int pos = random.nextInt(m);
-                if(matrix[pos][j] == 0) {
-                    matrix[pos][j] = 1;
-                    count--;
-                }
-            }
-        }
-        for(int i = 0; i < m; i++) {
-            System.out.println(Arrays.toString(matrix[i]));
-        }
-        return matrix;
-    }
 
     //Test method
     public static void main(String[] args) {
@@ -270,10 +188,11 @@ public class Tasks_ArrayOfArray {
         for(int i = 0; i < array3.length; i++) {
             System.out.println(Arrays.toString(array3[i]));
         }
-        generateRandomMatrix();
-        sortRows(intArray, true);
-        sortColumns(intArray, false);
-        formMatrix(5, 4);
+
+//        findMaxAndReplace(intArray);
+//        for(int i = 0; i < array.length; i++) {
+//            System.out.println(Arrays.toString(intArray[i]));
+//        }
     }
 }
 
