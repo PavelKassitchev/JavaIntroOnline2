@@ -239,6 +239,21 @@ public class Tasks_ArrayOfArray {
         return matrix;
     }
 
+    //This method finds the max value in the array and replaces all add elements with it
+    public static void findMaxAndReplace(int[][] array) {
+        int max = array[0][0];
+        for(int i = 0; i < array.length; i++) {
+            for(int j = 0; j < array[0].length; j++) {
+                if(array[i][j] > max) max = array[i][j];
+            }
+        }
+        for(int i = 0; i < array.length; i++) {
+            for(int j = 0; j < array[0].length; j++) {
+                if(array[i][j] %2 == 1) array[i][j] = max;
+            }
+        }
+    }
+
     //Test method
     public static void main(String[] args) {
         int[][]intArray = {{1, 2, 3},{0, -6, 5},{4, 4, 0}};
@@ -274,6 +289,11 @@ public class Tasks_ArrayOfArray {
         sortRows(intArray, true);
         sortColumns(intArray, false);
         formMatrix(5, 4);
+
+        findMaxAndReplace(intArray);
+        for(int i = 0; i < intArray.length; i++) {
+            System.out.println(Arrays.toString(intArray[i]));
+        }
     }
 }
 
