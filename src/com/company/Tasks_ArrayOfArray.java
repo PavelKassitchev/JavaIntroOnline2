@@ -153,7 +153,7 @@ public class Tasks_ArrayOfArray {
         return positive;
     }
 
-    //This method generates a random matrix 10x15, print it and print row numbers with three or more fives
+    //This method generates a random matrix 10x15, prints it and prints row numbers with three or more fives
     public static void generateRandomMatrix() {
         int rows = 10;
         int cols = 20;
