@@ -98,6 +98,8 @@ public class Time {
         System.out.println(time);
         time.changeSeconds(-3670);
         System.out.println(time);
+        time.changeSeconds(90);
+        System.out.println(time);
     }
 
 }
