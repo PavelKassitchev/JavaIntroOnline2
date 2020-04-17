@@ -8,6 +8,27 @@ public class Test1 {
     private int first;
     private int second;
 
+    public Test1(int first, int second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public int getFirst() {
+        return first;
+    }
+
+    public void setFirst(int first) {
+        this.first = first;
+    }
+
+    public int getSecond() {
+        return second;
+    }
+
+    public void setSecond(int second) {
+        this.second = second;
+    }
+
     public void printFirst() {
         System.out.println("first = " + first);
     }
@@ -25,5 +46,14 @@ public class Test1 {
     }
     public int findMax() {
         return first > second? first: second;
+    }
+
+    public static void main(String[] args) {
+        Test1 t = new Test1(4, 5);
+        t.printFirst();
+        t.printSecond();
+        t.mutateSecond(-2);
+        t.printSecond();
+        System.out.println(t.findMax());
     }
 }

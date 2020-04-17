@@ -34,4 +34,9 @@ public class Test2 {
     public void setSecond(int second) {
         this.second = second;
     }
+
+    public static void main(String[] args) {
+        Test2 t = new Test2();
+        System.out.println(t.getSecond());
+    }
 }

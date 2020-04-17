@@ -1,4 +1,4 @@
-package by.pavka.clazz.simplest;
+package by.pavka.clazz.simplest.airport;
 /*
 * Создать класс Airline, спецификация которого приведена ниже. Определить конструкторы, set- и get- методы и метод toString().
 * Создать второй класс, агрегирующий массив типа Airline, с подходящими конструкторами и методами. Задать критерии выбора данных и вывести эти данные на консоль.
@@ -76,101 +76,6 @@ public class Airport {
         }
         System.out.println(times);
         return times;
-    }
-}
-
-class Airline {
-
-    private String destination;
-    private int flight;
-    private String type;
-    private DepartureTime time;
-    private int weekDay;
-
-    public Airline(String destination, int flight, String type, DepartureTime time, int weekDay) {
-        this.destination = destination;
-        this.flight = flight;
-        this.type = type;
-        this.time = time;
-        this.weekDay = weekDay;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public int getFlight() {
-        return flight;
-    }
-
-    public void setFlight(int flight) {
-        this.flight = flight;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public DepartureTime getTime() {
-        return time;
-    }
-
-    public void setTime(DepartureTime time) {
-        this.time = time;
-    }
-
-    public int getWeekDay() {
-        return weekDay;
-    }
-
-    public void setWeekDay(int weekDay) {
-        this.weekDay = weekDay;
-    }
-
-    @Override
-    public String toString() {
-        return destination + " " + time + " " + weekDay + " " + "Flight " + flight;
-    }
-}
-
-class DepartureTime {
-    private int hours;
-    private int minutes;
-
-    public DepartureTime(int hours, int minutes) {
-        this.hours = hours;
-        this.minutes = minutes;
-    }
-
-    @Override
-    public String toString() {
-        String h = String.valueOf(hours);
-        if(hours < 10) h = "0" + h;
-        String m = String.valueOf(minutes);
-        if(minutes < 10) m = "0" + minutes;
-        return h + ":" + m;
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public boolean isLater(DepartureTime other) {
-        if(hours > other.hours) return true;
-        if(minutes > other.minutes) return true;
-        return false;
     }
 }
 
