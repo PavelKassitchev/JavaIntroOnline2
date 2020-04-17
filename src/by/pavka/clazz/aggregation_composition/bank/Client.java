@@ -38,6 +38,15 @@ public class Client {
         }
     }
 
+    public Account searchByNumber(int number) {
+        for(Account acc: accounts) {
+            if(acc.getNumber() == number) {
+                return acc;
+            }
+        }
+        return null;
+    }
+
 
     public List<Account> sortByNumber() {
         accounts.sort(new Comparator<Account>() {
@@ -50,11 +59,55 @@ public class Client {
         return accounts;
     }
 
+    public List<Account> sortByAmount() {
+        accounts.sort(new Comparator<Account>() {
+            @Override
+            public int compare(Account o1, Account o2) {
+                return o1.getAmount() - o2.getAmount();
+            }
+        });
+        System.out.println(accounts);
+        return accounts;
+    }
+
+    public List<Account> getBlocked() {
+        List<Account> blocked = new ArrayList<>();
+        for(Account acc: accounts) {
+            if(acc.isBlocked()) {
+                blocked.add(acc);
+            }
+        }
+        System.out.println(blocked);
+        return blocked;
+    }
+
+    public int getTotal() {
+        int sum = 0;
+        for(Account acc: accounts) sum += acc.getAmount();
+        return sum;
+    }
+
+    public int getPositive() {
+        int sum = 0;
+        for(Account acc: accounts) {
+            if(acc.getAmount() > 0) sum += acc.getAmount();
+        }
+        return sum;
+    }
+
+    public int getNegative() {
+        int sum = 0;
+        for(Account acc: accounts) {
+            if(acc.getAmount() < 0) sum += acc.getAmount();
+        }
+        return sum;
+    }
+
     public static void main(String[] args) {
-        Account a1 = new Account(145);
-        Account a2 = new Account(155);
+        Account a1 = new Account(145, -40, true);
+        Account a2 = new Account(155, 78, false);
         Account a3 = new Account(105);
-        Account a4 = new Account(45);
+        Account a4 = new Account(45, 5, true);
 
         List<Account> accs = new ArrayList<>();
         accs.add(a1);
@@ -65,6 +118,12 @@ public class Client {
         Client client = new Client(accs);
 
         client.sortByNumber();
+        System.out.println(client.searchByNumber(45));
+        client.sortByAmount();
+        client.getBlocked();
+        System.out.println(client.getTotal());
+        System.out.println(client.getPositive());
+        System.out.println(client.getNegative());
     }
 }
 
