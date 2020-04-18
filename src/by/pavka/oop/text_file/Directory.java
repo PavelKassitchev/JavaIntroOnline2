@@ -65,7 +65,7 @@ public class Directory {
 
     @Override
     public String toString() {
-        return name  + (host == null? " - no host ": " - host: " + host.getName()) + "- directories: " + children + "- files: " + files + "- has content: " + hasContent;
+        return name  + (host == null? " - no host ": " - host: " + host.getName()) + " - directories: " + children + " - files: " + files + " - has content: " + hasContent;
     }
 
     public void addChild(Directory dir) {
