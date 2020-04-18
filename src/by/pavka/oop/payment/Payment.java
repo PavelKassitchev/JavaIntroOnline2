@@ -52,28 +52,6 @@ public class Payment {
 
     }
 
-
-
-//    public void reduceProduct(Product product) {
-//        int reduction = product.quantity;
-//        List<Product> copy = new ArrayList<>(products);
-//        for(Product p: copy) {
-//            if(p.name == product.name && p.unitPrice == product.unitPrice) {
-//                if(p.quantity > reduction) {
-//                    p.quantity = p.quantity - reduction;
-//                    total -= reduction * product.unitPrice;
-//                    break;
-//                }
-//                else {
-//                    reduction -= p.quantity;
-//                    total -= p.quantity * p.unitPrice;
-//                    products.remove(p);
-//
-//                }
-//            }
-//        }
-//    }
-
     public class Product {
 
         private String name;
