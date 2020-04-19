@@ -1,11 +1,9 @@
 package by.pavka.oop.dragon;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class Dragon {
-
-    private String name;
-    private String salutation;
 
     private Treasury treasury;
 
@@ -28,7 +26,9 @@ public abstract class Dragon {
         return expensive;
     }
 
-    public abstract void reply();
+    public abstract void introduce();
+
+    public abstract List<Treasure> selectToMatchAmount(int amount);
 
     private int getWealth() {
         int wealth = treasury.getAmount();
