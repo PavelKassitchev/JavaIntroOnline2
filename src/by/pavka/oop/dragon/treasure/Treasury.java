@@ -1,4 +1,6 @@
-package by.pavka.oop.dragon;
+package by.pavka.oop.dragon.treasure;
+
+import by.pavka.oop.dragon.nation.Nation;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,9 +1,11 @@
-package by.pavka.oop.dragon;
+package by.pavka.oop.dragon.treasure;
+
+import by.pavka.oop.dragon.nation.Nation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.pavka.oop.dragon.Nation.*;
+import static by.pavka.oop.dragon.nation.Nation.*;
 
 public enum TreasureType {
     DIAMOND(GERMAN, 8, 40), GOLD(GERMAN, 5, 30), SILVER(GERMAN, 4, 12),

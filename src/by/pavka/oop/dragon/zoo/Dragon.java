@@ -1,4 +1,8 @@
-package by.pavka.oop.dragon;
+package by.pavka.oop.dragon.zoo;
+
+import by.pavka.oop.dragon.nation.Nation;
+import by.pavka.oop.dragon.treasure.Treasure;
+import by.pavka.oop.dragon.treasure.Treasury;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,11 +30,17 @@ public abstract class Dragon {
         return expensive;
     }
 
+    public Treasure[] getTreasures() {
+        return treasury.getTreasures();
+    }
+
     public abstract void introduce();
+
+    public abstract void sayGoodBye();
 
     public abstract List<Treasure> selectToMatchAmount(int amount);
 
-    private int getWealth() {
+    public int getWealth() {
         int wealth = treasury.getAmount();
         return wealth;
     }

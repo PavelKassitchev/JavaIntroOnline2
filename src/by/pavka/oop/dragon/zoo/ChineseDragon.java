@@ -1,4 +1,7 @@
-package by.pavka.oop.dragon;
+package by.pavka.oop.dragon.zoo;
+
+import by.pavka.oop.dragon.nation.Nation;
+import by.pavka.oop.dragon.treasure.Treasure;
 
 import java.util.List;
 
@@ -27,6 +30,11 @@ public class ChineseDragon extends Dragon {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void sayGoodBye() {
+        System.out.println("Zàijiàn");
     }
 
     @Override

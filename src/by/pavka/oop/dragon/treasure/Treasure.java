@@ -1,4 +1,4 @@
-package by.pavka.oop.dragon;
+package by.pavka.oop.dragon.treasure;
 
 import java.util.Random;
 
