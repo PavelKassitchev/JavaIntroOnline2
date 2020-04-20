@@ -31,7 +31,7 @@ public class RussianDragon extends Dragon {
         Date date = new Date();
         Random random = new Random();
         Date current = new Date();
-        while(leftAmount > 0 && (current.getTime() - date.getTime() < 5000)) {
+        while(leftAmount > 0 && (current.getTime() - date.getTime() < 1000)) {
 
             int index = random.nextInt(copy.size());
             if(copy.get(index).getPrice() < leftAmount) {
@@ -41,7 +41,7 @@ public class RussianDragon extends Dragon {
             }
             current = new Date();
         }
-        System.out.println("Is it okay to offer a collection to the amount of " + (amount - leftAmount) + "?");
+        System.out.println("Is it okay to offer you a treasure collection to the amount of " + (amount - leftAmount) + "?");
         System.out.println(treasuresToMatch);
         if(amount - leftAmount > 0) {
             System.out.println("This is the best I can do");

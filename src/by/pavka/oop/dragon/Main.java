@@ -29,7 +29,10 @@ public class Main {
     public static void main(String[] args) {
         Dragon dragon = null;
 
-        int choice = processInput("Choose your Dragon", "To exit the program", "For German Dragon", "For Russian Dragon", "For Chinese Dragon");
+        System.out.println("This application allows you to select a Dragon among three sorts of them and check their treasuries following the instructions below");
+        System.out.println();
+
+        int choice = processInput("First choose your Dragon", "To exit the program", "For German Dragon", "For Russian Dragon", "For Chinese Dragon");
 
         switch(choice) {
             case 0:
@@ -50,22 +53,26 @@ public class Main {
         dragon.introduce();
         dragon.fillInTreasury();
 
-        int choice2 = processInput("Choose what you want me to do", "Say good-by in my native language", "Show my treasury", "Show my most expensive treasure",
-                "Select treasures that match tha amount you will chose");
+        int choice2 = -1;
 
-        switch(choice2) {
-            case 0:
-                dragon.sayGoodBye();
-                return;
-            case 1:
-                dragon.showTreasures();
-                break;
-            case 2:
-                dragon.selectTheMostExpensive();
-                break;
-            case 3:
-                int amount = processAmount(dragon);
-                dragon.selectToMatchAmount(amount);
+        while (choice2 != 0) {
+            choice2 = processInput("Choose what you want me to do", "For saying good-by in my native language", "For showing my treasury", "For showing my most expensive treasure",
+                    "For selecting treasures that match the amount you will chose");
+
+            switch (choice2) {
+                case 0:
+                    dragon.sayGoodBye();
+                    return;
+                case 1:
+                    dragon.showTreasures();
+                    break;
+                case 2:
+                    dragon.selectTheMostExpensive();
+                    break;
+                case 3:
+                    int amount = processAmount(dragon);
+                    dragon.selectToMatchAmount(amount);
+            }
         }
 
 
