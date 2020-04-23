@@ -1,5 +1,16 @@
 package by.pavka.oop.flower_compostion;
 
+import by.pavka.oop.flower_compostion.decor.Asparagus;
+import by.pavka.oop.flower_compostion.decor.Band;
+import by.pavka.oop.flower_compostion.flower.Clove;
+import by.pavka.oop.flower_compostion.flower.Flower;
+import by.pavka.oop.flower_compostion.flower.Rose;
+import by.pavka.oop.flower_compostion.flower.Tulip;
+import static by.pavka.oop.flower_compostion.Color.*;
+import static by.pavka.oop.flower_compostion.flower.Flower.*;
+
+import java.util.Map;
+
 /*
 * Создать консольное приложение, удовлетворяющее следующим требованиям:
 
@@ -22,8 +33,16 @@ package by.pavka.oop.flower_compostion;
 
 
  */
-public class Main {
+public class FlowerShop {
+
+
     public static void main(String[] args) {
 
+        Bouquet.BouquetBuilder builder = Bouquet.getBuilder();
+        builder.addFlower(new Tulip(-6, RED), new Rose(TOP_QUALITY, RED));
+        builder.removeFlower(new Tulip(LOW_QUALITY, RED));
+        builder.addFlower(new Rose(MEDIUM_QUALITY, YELLOW));
+        builder.removeFlower(new Rose(MEDIUM_QUALITY, YELLOW)).addFlower(new Rose(LOW_QUALITY, VIOLET));
+        builder.addFlower(new Rose(LOW_QUALITY, VIOLET), new Clove(MEDIUM_QUALITY, YELLOW)).addDecor(new Asparagus()).addDecor(new Band(GREEN)).wrap();
     }
 }
