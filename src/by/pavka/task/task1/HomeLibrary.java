@@ -25,13 +25,35 @@ package by.pavka.task.task1;
 
  */
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+
 public class HomeLibrary {
 
-    public static void main(String[] args) {
-        System.out.println(new EBook("Ulysses", "James Joyce"));
-        System.out.println(new PaperBook("Ulysses", "James Joyce"));
+    public static void main(String[] args) throws IOException {
+        File auth = new File("AUTH");
+        auth.mkdirs();
+        File data = new File(auth + "\\data.txt");
+        Properties properties = new Properties();
+        FileWriter fileWriter = null;
 
-        System.out.println(new User("Paul", "pavka"));
-        System.out.println(new User("Paul", "pavka1"));
+        try{
+            data.createNewFile();
+            //properties.load(new FileReader(data));
+            properties.setProperty("play", "once");
+            fileWriter = new FileWriter(data);
+            properties.store(fileWriter, null);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        User user = new User("Paul", "pavka", "123456");
+        System.out.println(user);
+        properties.setProperty(user.getName(), String.valueOf(user.getPassHash()));
+        properties.store(fileWriter, "O");
     }
 }
