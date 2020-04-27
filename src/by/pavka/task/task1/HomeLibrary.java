@@ -29,31 +29,50 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Properties;
 
 public class HomeLibrary {
 
-    public static void main(String[] args) throws IOException {
-        File auth = new File("AUTH");
-        auth.mkdirs();
-        File data = new File(auth + "\\data.txt");
-        Properties properties = new Properties();
-        FileWriter fileWriter = null;
+    public static final String END_SESSION = "END";
+    public static final String END_APP = "EXIT";
 
-        try{
-            data.createNewFile();
-            //properties.load(new FileReader(data));
-            properties.setProperty("play", "once");
-            fileWriter = new FileWriter(data);
-            properties.store(fileWriter, null);
+    private static Properties authentication = new Properties();
+    private static File authData = new File("auth.txt");
+    private static FileReader fileReader;
+    private static FileWriter fileWriter;
+
+
+    static {
+        try {
+            authData.createNewFile();
+            fileReader = new FileReader(authData);
+            fileWriter = new FileWriter(authData, true);
+            authentication.load(fileReader);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        User user = new User("Paul", "pavka", "123456");
-        System.out.println(user);
-        properties.setProperty(user.getName(), String.valueOf(user.getPassHash()));
-        properties.store(fileWriter, "O");
+    }
+    public static void main(String[] args) throws IOException {
+
+        boolean finished = false;
+        Dialog dialog = new Dialog(authentication);
+        dialog.session(END_SESSION);
+        exit();
+
+    }
+
+
+
+    private static void exit() {
+        System.out.println("Good-bye");
+
+        try {
+            authentication.store(fileWriter, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

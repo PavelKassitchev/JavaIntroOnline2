@@ -4,39 +4,38 @@ import java.util.Objects;
 
 public class User implements Locatable {
 
-    public static int userId;
-    private String name;
     private String email;
-    private int id;
-    private int passHash;
-
-    public User(String name, String email, String password) {
-        this.name = name;
+    public User(String email) {
         this.email = email;
-        id = ++userId;
-        passHash = Objects.hash(name, email, password);
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
-    public int getPassHash() {
-        return passHash;
-    }
+
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", id=" + id +
-                ", passHash=" + passHash +
-                '}';
+        return getClass().getSimpleName() + " " + email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        if(o.getClass() != getClass()) return false;
+        User user = (User) o;
+        return email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
     }
 
     @Override
     public String getLocation() {
-        return name;
+        return email;
     }
 }
