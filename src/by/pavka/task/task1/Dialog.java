@@ -43,6 +43,7 @@ public class Dialog {
                 break;
         }
         User user = address.equals(Admin.ADMIN_EMAIL)? new Admin(): new User(address);
+        user.startView();
         String result = null;
         do {
             result = process(user, end);
@@ -53,7 +54,7 @@ public class Dialog {
     }
 
     private String process(User user, String end) {
-        user.startView();
+
         String command = null;
         String error = "";
 
@@ -71,20 +72,17 @@ public class Dialog {
         switch(command) {
             case "NEXT":
                 user.next();
-                System.out.println(command);
-                return command;
+                break;
             case "PREV":
                 user.prev();
-                System.out.println(command);
-                return command;
+                break;
             case "START":
                 user.startView();
-                System.out.println(command);
-                return command;
+                break;
             default:
-                return command;
+                break;
         }
-
+        return "";
     }
 
     private String signIn(String end) {
