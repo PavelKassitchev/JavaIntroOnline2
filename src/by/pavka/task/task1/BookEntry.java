@@ -4,7 +4,7 @@ public class BookEntry {
 
     private Book book;
     private String description;
-    private Locatable locatable;
+    private String location;
 
     public BookEntry(Book book) {
         this.book = book;
@@ -15,19 +15,20 @@ public class BookEntry {
         this.description = description;
     }
 
-    public BookEntry(Book book, Locatable locatable) {
-        this.book = book;
-        this.locatable = locatable;
-    }
 
-    public BookEntry(Book book, String description, Locatable locatable) {
+
+    public BookEntry(Book book, String description, String location) {
         this.book = book;
         this.description = description;
-        this.locatable = locatable;
+        this.location = location;
     }
 
     public Book getBook() {
         return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public String getDescription() {
@@ -38,16 +39,21 @@ public class BookEntry {
         this.description = description;
     }
 
-    public Locatable getLocatable() {
-        return locatable;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLocatable(Locatable locatable) {
-        this.locatable = locatable;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public boolean contains(Book b) {
         if(book.equals(b)) return true;
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return book + "description = " + description + '\'' + ", location = " + location + '\'';
     }
 }

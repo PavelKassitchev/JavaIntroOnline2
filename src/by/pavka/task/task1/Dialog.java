@@ -43,14 +43,46 @@ public class Dialog {
                 break;
         }
         User user = address.equals(Admin.ADMIN_EMAIL)? new Admin(): new User(address);
-        process(user, end);
-        //
-        BookEntry bookEntry = new BookEntry(new EBook("Y", "N"), "Great book", new PhysicalLocalisation(new BookCase("C", 3)));
-        user.addBookEntry(bookEntry);
+        String result = null;
+        do {
+            result = process(user, end);
+        }
+        while(!result.equals(end));
+
+
     }
 
-    private void process(User user, String end) {
-        //TODO
+    private String process(User user, String end) {
+        user.startView();
+        String command = null;
+        String error = "";
+
+        do {
+            System.out.println(error);
+            System.out.println("To check the next page print \"NEXT\"");
+            System.out.println("To check the previous page print \"PREV\"");
+            System.out.println("To check the first page print \"START\"");
+            System.out.println("Or type " + "\"" + end + "\"" + " if you want to end your session");
+            error = "Wrong input";
+            command = scanner.nextLine();
+            if(command.equals(end)) return end;
+        }
+        while(!command.equals("NEXT") && !command.equals("PREV") && !command.equals("START"));
+        switch(command) {
+            case "NEXT":
+                user.next();
+                System.out.println(command);
+                return command;
+            case "PREV":
+                user.prev();
+                System.out.println(command);
+                return command;
+            default:
+                user.startView();
+                System.out.println(command);
+                return command;
+        }
+
     }
 
     private String signIn(String end) {

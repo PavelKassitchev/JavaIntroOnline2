@@ -2,7 +2,7 @@ package by.pavka.task.task1;
 
 import java.util.Objects;
 
-public class User implements Locatable {
+public class User {
 
     private Catalog catalog;
 
@@ -24,6 +24,18 @@ public class User implements Locatable {
         System.out.println("Only Admin can add BookEntries");
     }
 
+    public void startView() {
+        catalog.startView();
+    }
+
+    public void next() {
+        catalog.viewNextPage();
+    }
+
+    public void prev() {
+        catalog.viewPrevPage();
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + " " + email;
@@ -43,8 +55,5 @@ public class User implements Locatable {
         return Objects.hash(email);
     }
 
-    @Override
-    public String getLocation() {
-        return email;
-    }
+
 }

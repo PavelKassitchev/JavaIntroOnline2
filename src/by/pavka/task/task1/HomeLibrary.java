@@ -29,6 +29,7 @@ package by.pavka.task.task1;
 import com.google.gson.Gson;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -57,28 +58,19 @@ public class HomeLibrary {
             System.out.println(catalogPath.createNewFile() + " " + catalogPath.length());
 
             catalogReader = new FileReader(catalogPath);
-            //catalogWriter = new FileWriter(catalogPath);
-//            int reader = catalogReader.read();
-//            System.out.println(reader);
-//            Scanner catScanner = new Scanner(catalogReader);
-//            String catalogString = "";
-//            while(catScanner.hasNextLine()) {
-//                catalogString += catScanner.nextLine();
-//            }
             String catalogString = "";
             BufferedReader br = new BufferedReader(catalogReader);
             String line;
             while((line = br.readLine()) != null) catalogString += line;
 
-            System.out.println("From File " + catalogString);
             Catalog catalog = Catalog.getInstance();
             if (catalogString != null && !catalogString.isEmpty()) {
 
                 BookEntry[] books = new Gson().fromJson(catalogString, BookEntry[].class);
 
-                catalog.setBooks(Arrays.asList(books));
+                catalog.setBooks(new ArrayList(Arrays.asList(books)));
             }
-            catalogWriter = new FileWriter(catalogPath);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,11 +94,12 @@ public class HomeLibrary {
         try {
             //authentication.store(fileWriter, null);
             String catalogString = new Gson().toJson(Catalog.getInstance().getBooks());
-            System.out.println(catalogString);
+            catalogWriter = new FileWriter(catalogPath);
             catalogWriter.write(catalogString);
             catalogWriter.flush();
             fileWriter.close();
             fileReader.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

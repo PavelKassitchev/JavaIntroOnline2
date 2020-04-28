@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Catalog extends EBook {
+public class Catalog extends Book {
 
     private static Catalog instance;
 
     private List<BookEntry> books;
+
+    private int currentPage;
 
     public static Catalog getInstance() {
         if(instance == null) {
@@ -26,7 +28,7 @@ public class Catalog extends EBook {
     }
 
     private Catalog() {
-        super("Home Library Catalog", "Pavel Kassitchev");
+        super(Type.DIGITAL, "Home Library Catalog", "Pavel Kassitchev");
         books = new ArrayList<>();
     }
 
@@ -43,14 +45,6 @@ public class Catalog extends EBook {
         }
     }
 
-    public void relocateBook(Book book, Locatable locatable) {
-        for(BookEntry bookEntry: books) {
-            if(bookEntry.contains(book)) {
-                bookEntry.setLocatable(locatable);
-                return;
-            }
-        }
-    }
 
     public void modifyDescription(Book book, String description) {
         for(BookEntry bookEntry: books) {
@@ -58,6 +52,29 @@ public class Catalog extends EBook {
                 bookEntry.setDescription(description);
                 return;
             }
+        }
+    }
+
+    public BookEntry getBookEntry(int i) {
+        return books.get(i);
+    }
+
+    public void startView() {
+        if(!books.isEmpty()) {
+            System.out.println(getBookEntry(0));
+            currentPage = 0;
+        }
+    }
+
+    public void viewNextPage() {
+        if(!books.isEmpty() && currentPage < books.size() - 1) {
+            System.out.println("PAGE " + (currentPage + 2) + '\n' + getBookEntry(++currentPage));
+        }
+    }
+
+    public void viewPrevPage() {
+        if(!books.isEmpty() && currentPage > 0) {
+            System.out.println("PAGE " + (currentPage + 2) + '\n' + getBookEntry(--currentPage));
         }
     }
 }

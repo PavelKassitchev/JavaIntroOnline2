@@ -2,46 +2,44 @@ package by.pavka.task.task1;
 
 import java.util.Objects;
 
-public abstract class Book {
-
-    private static int idNumber;
+public class Book {
 
     public  String[] author;
     private String title;
-    //private final String content;
-    private String id;
+    private Type type;
 
 
-    public Book(String title, String... author) {
+    public Book(Type type, String title, String... author) {
 
+        this.type = type;
         this.author = author;
         this.title = title;
-        idNumber++;
-        id = generateId();
-        //content = loadContent();
-    }
-
-    public static int getIdNumber() {
-        return idNumber;
     }
 
     public String[] getAuthor() {
         return author;
     }
 
+    public void setAuthor(String[] author) {
+        this.author = author;
+    }
+
     public String getTitle() {
         return title;
     }
 
-//    public String getContent() {
-//        return content;
-//    }
-
-    public String getId() {
-        return id;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
 
     @Override
     public String toString() {
@@ -50,27 +48,15 @@ public abstract class Book {
             authors.append(author[i] + ',');
         }
         authors.append(author[author.length - 1]);
-        return getClass().getSimpleName() + " " + title + '\n' + authors.toString() + '\n' + "ID = " + id + '\n';
+        return "Book " + type + " TITLE: " + title + '\n' + authors.toString() + '\n';
     }
 
 
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Book)) return false;
-        Book book = (Book) o;
-        return id.equals(book.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 
-    public abstract String generateId();
-    //public abstract String loadContent();
+
 
 
 }
