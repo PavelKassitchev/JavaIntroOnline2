@@ -6,10 +6,11 @@ public abstract class Book {
 
     private static int idNumber;
 
-    public final String[] author;
-    private final String title;
-    private final String content;
-    private final String id;
+    public  String[] author;
+    private String title;
+    //private final String content;
+    private String id;
+
 
     public Book(String title, String... author) {
 
@@ -17,7 +18,7 @@ public abstract class Book {
         this.title = title;
         idNumber++;
         id = generateId();
-        content = loadContent();
+        //content = loadContent();
     }
 
     public static int getIdNumber() {
@@ -32,9 +33,9 @@ public abstract class Book {
         return title;
     }
 
-    public String getContent() {
-        return content;
-    }
+//    public String getContent() {
+//        return content;
+//    }
 
     public String getId() {
         return id;
@@ -52,6 +53,9 @@ public abstract class Book {
         return getClass().getSimpleName() + " " + title + '\n' + authors.toString() + '\n' + "ID = " + id + '\n';
     }
 
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,7 +70,7 @@ public abstract class Book {
     }
 
     public abstract String generateId();
-    public abstract String loadContent();
+    //public abstract String loadContent();
 
 
 }

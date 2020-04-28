@@ -7,4 +7,9 @@ public class Admin extends User {
     public Admin() {
         super(ADMIN_EMAIL);
     }
+
+    @Override
+    public void addBookEntry(BookEntry bookEntry) {
+        getCatalog().addBook(bookEntry);
+    }
 }

@@ -4,16 +4,25 @@ import java.util.Objects;
 
 public class User implements Locatable {
 
+    private Catalog catalog;
+
     private String email;
     public User(String email) {
         this.email = email;
+        catalog = Catalog.getInstance();
     }
 
     public String getEmail() {
         return email;
     }
 
+    public Catalog getCatalog() {
+        return catalog;
+    }
 
+    public void addBookEntry(BookEntry bookEntry) {
+        System.out.println("Only Admin can add BookEntries");
+    }
 
     @Override
     public String toString() {

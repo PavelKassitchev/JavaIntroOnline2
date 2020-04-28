@@ -12,8 +12,8 @@ public class PaperBook extends Book {
         return Book.getIdNumber() + "P";
     }
 
-    @Override
-    public String loadContent() {
-        return null;
-    }
+//    @Override
+//    public String loadContent() {
+//        return null;
+//    }
 }

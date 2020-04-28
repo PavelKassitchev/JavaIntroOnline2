@@ -1,4 +1,5 @@
 package by.pavka.task.task1;
+
 /*
 * Задание 1: создать консольное приложение “Учет книг в домашней библиотеке”.
 
@@ -25,11 +26,10 @@ package by.pavka.task.task1;
 
  */
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Date;
+import com.google.gson.Gson;
+
+import java.io.*;
+import java.util.Arrays;
 import java.util.Properties;
 
 public class HomeLibrary {
@@ -42,6 +42,10 @@ public class HomeLibrary {
     private static FileReader fileReader;
     private static FileWriter fileWriter;
 
+    private static File catalogPath = new File("catalog.txt");
+    private static FileReader catalogReader;
+    private static FileWriter catalogWriter;
+
 
     static {
         try {
@@ -49,6 +53,32 @@ public class HomeLibrary {
             fileReader = new FileReader(authData);
             fileWriter = new FileWriter(authData, true);
             authentication.load(fileReader);
+
+            System.out.println(catalogPath.createNewFile() + " " + catalogPath.length());
+
+            catalogReader = new FileReader(catalogPath);
+            //catalogWriter = new FileWriter(catalogPath);
+//            int reader = catalogReader.read();
+//            System.out.println(reader);
+//            Scanner catScanner = new Scanner(catalogReader);
+//            String catalogString = "";
+//            while(catScanner.hasNextLine()) {
+//                catalogString += catScanner.nextLine();
+//            }
+            String catalogString = "";
+            BufferedReader br = new BufferedReader(catalogReader);
+            String line;
+            while((line = br.readLine()) != null) catalogString += line;
+
+            System.out.println("From File " + catalogString);
+            Catalog catalog = Catalog.getInstance();
+            if (catalogString != null && !catalogString.isEmpty()) {
+
+                BookEntry[] books = new Gson().fromJson(catalogString, BookEntry[].class);
+
+                catalog.setBooks(Arrays.asList(books));
+            }
+            catalogWriter = new FileWriter(catalogPath);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +88,7 @@ public class HomeLibrary {
     public static void main(String[] args) throws IOException {
 
         boolean finished = false;
-        Dialog dialog = new Dialog(authentication);
+        Dialog dialog = new Dialog(authentication, fileWriter);
         dialog.session(END_SESSION);
         exit();
 
@@ -70,7 +100,13 @@ public class HomeLibrary {
         System.out.println("Good-bye");
 
         try {
-            authentication.store(fileWriter, null);
+            //authentication.store(fileWriter, null);
+            String catalogString = new Gson().toJson(Catalog.getInstance().getBooks());
+            System.out.println(catalogString);
+            catalogWriter.write(catalogString);
+            catalogWriter.flush();
+            fileWriter.close();
+            fileReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

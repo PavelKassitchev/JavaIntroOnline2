@@ -1,5 +1,7 @@
 package by.pavka.task.task1;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Scanner;
@@ -8,22 +10,29 @@ import java.util.Set;
 public class Dialog {
 
     private Properties properties;
+    private FileWriter fileWriter;
     private static Scanner scanner = new Scanner(System.in);
     private String address;
     private boolean isOver;
 
-    public Dialog(Properties properties) {
+    public Dialog(Properties properties, FileWriter fileWriter) {
         this.properties = properties;
+        this.fileWriter = fileWriter;
     }
 
     public void session(String end) {
         int choice = enter();
-        String address = null;
+        address = null;
         switch(choice) {
             case 1:
                 address = signUp(end);
                 if(address.equals(end)) {
                     return;
+                }
+                try {
+                    properties.store(fileWriter, address);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 break;
             case 2:
@@ -34,10 +43,13 @@ public class Dialog {
                 break;
         }
         User user = address.equals(Admin.ADMIN_EMAIL)? new Admin(): new User(address);
-        process(user);
+        process(user, end);
+        //
+        BookEntry bookEntry = new BookEntry(new EBook("Y", "N"), "Great book", new PhysicalLocalisation(new BookCase("C", 3)));
+        user.addBookEntry(bookEntry);
     }
 
-    private void process(User user) {
+    private void process(User user, String end) {
         //TODO
     }
 
@@ -126,13 +138,14 @@ public class Dialog {
     }
 
     private int enter() {
-        System.out.println("Enter the System");
-        System.out.println("Press 1 if you are a new user and want to Sign Up");
-        System.out.println("Press 2 if you already have an account and want to Sign In");
+
         int choice = 0;
         String error = "";
         do {
             System.out.println(error);
+            System.out.println("Enter the System");
+            System.out.println("Press 1 if you are a new user and want to Sign Up");
+            System.out.println("Press 2 if you already have an account and want to Sign In");
             if(scanner.hasNext()) {
                 if(scanner.hasNextInt()) {
                     choice = scanner.nextInt();

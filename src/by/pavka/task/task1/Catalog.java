@@ -17,6 +17,14 @@ public class Catalog extends EBook {
         return instance;
     }
 
+    public void setBooks(List<BookEntry> books) {
+        this.books = books;
+    }
+
+    public List<BookEntry> getBooks() {
+        return books;
+    }
+
     private Catalog() {
         super("Home Library Catalog", "Pavel Kassitchev");
         books = new ArrayList<>();

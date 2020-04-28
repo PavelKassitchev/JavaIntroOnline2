@@ -12,9 +12,9 @@ public class EBook extends Book {
         return Book.getIdNumber() + "E";
     }
 
-    @Override
-    public String loadContent() {
-        //TODO
-        return null;
-    }
+//    @Override
+//    public String loadContent() {
+//        //TODO
+//        return null;
+//    }
 }
