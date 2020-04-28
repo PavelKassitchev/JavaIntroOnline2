@@ -77,9 +77,11 @@ public class Dialog {
                 user.prev();
                 System.out.println(command);
                 return command;
-            default:
+            case "START":
                 user.startView();
                 System.out.println(command);
+                return command;
+            default:
                 return command;
         }
 

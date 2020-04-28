@@ -60,21 +60,24 @@ public class Catalog extends Book {
     }
 
     public void startView() {
+        System.out.println("Invoke start");
         if(!books.isEmpty()) {
-            System.out.println(getBookEntry(0));
+            System.out.println("PAGE " + (currentPage + 1) + getBookEntry(0));
             currentPage = 0;
         }
     }
 
     public void viewNextPage() {
+        System.out.println("Invoke next");
         if(!books.isEmpty() && currentPage < books.size() - 1) {
             System.out.println("PAGE " + (currentPage + 2) + '\n' + getBookEntry(++currentPage));
         }
     }
 
     public void viewPrevPage() {
+        System.out.println("Invoke prev");
         if(!books.isEmpty() && currentPage > 0) {
-            System.out.println("PAGE " + (currentPage + 2) + '\n' + getBookEntry(--currentPage));
+            System.out.println("PAGE " + (currentPage) + '\n' + getBookEntry(--currentPage));
         }
     }
 }
