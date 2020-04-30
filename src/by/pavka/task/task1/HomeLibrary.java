@@ -26,6 +26,8 @@ package by.pavka.task.task1;
 
  */
 
+import by.pavka.task.task1.book.BookEntry;
+import by.pavka.task.task1.book.Catalog;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -36,7 +38,6 @@ import java.util.Properties;
 public class HomeLibrary {
 
     public static final String END_SESSION = "END";
-    public static final String END_APP = "EXIT";
 
     private static Properties authentication = new Properties();
     private static File authData = new File("auth.txt");
@@ -45,7 +46,6 @@ public class HomeLibrary {
 
     private static File catalogPath = new File("catalog.txt");
     private static FileReader catalogReader;
-    private static FileWriter catalogWriter;
 
 
     static {
@@ -54,9 +54,7 @@ public class HomeLibrary {
             fileReader = new FileReader(authData);
             fileWriter = new FileWriter(authData, true);
             authentication.load(fileReader);
-
-            System.out.println(catalogPath.createNewFile() + " " + catalogPath.length());
-
+            catalogPath.createNewFile();
             catalogReader = new FileReader(catalogPath);
             String catalogString = "";
             BufferedReader br = new BufferedReader(catalogReader);
@@ -79,7 +77,6 @@ public class HomeLibrary {
     }
     public static void main(String[] args) throws IOException {
 
-        boolean finished = false;
         Dialog dialog = new Dialog(authentication, fileWriter);
         dialog.session(END_SESSION);
         exit();
@@ -92,16 +89,23 @@ public class HomeLibrary {
         System.out.println("Good-bye");
 
         try {
-            //authentication.store(fileWriter, null);
-            String catalogString = new Gson().toJson(Catalog.getInstance().getBooks());
-            catalogWriter = new FileWriter(catalogPath);
-            catalogWriter.write(catalogString);
-            catalogWriter.flush();
+            if (Catalog.getInstance().isModified()) {
+                String catalogString = new Gson().toJson(Catalog.getInstance().getBooks());
+                FileWriter catalogWriter = new FileWriter(catalogPath);
+                catalogWriter.write(catalogString);
+                catalogWriter.flush();
+            }
             fileWriter.close();
             fileReader.close();
+            catalogReader.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static Properties getAuthentication() {
+        return authentication;
+    }
+
 }

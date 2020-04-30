@@ -1,4 +1,4 @@
-package by.pavka.task.task1;
+package by.pavka.task.task1.book;
 
 public class BookEntry {
 
@@ -8,11 +8,14 @@ public class BookEntry {
 
     public BookEntry(Book book) {
         this.book = book;
+        description = "No description yet";
+        location = "Not located yet";
     }
 
     public BookEntry(Book book, String description) {
         this.book = book;
         this.description = description;
+        location = "Not located yet";
     }
 
 
@@ -54,6 +57,6 @@ public class BookEntry {
 
     @Override
     public String toString() {
-        return book + "description = " + description + '\'' + ", location = " + location + '\'';
+        return book + "description = " + description  + ", location = " + location;
     }
 }

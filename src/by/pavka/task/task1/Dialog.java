@@ -1,5 +1,11 @@
 package by.pavka.task.task1;
 
+import by.pavka.task.task1.book.Book;
+import by.pavka.task.task1.book.BookEntry;
+import by.pavka.task.task1.book.Type;
+import by.pavka.task.task1.user.Admin;
+import by.pavka.task.task1.user.User;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
@@ -13,7 +19,6 @@ public class Dialog {
     private FileWriter fileWriter;
     private static Scanner scanner = new Scanner(System.in);
     private String address;
-    private boolean isOver;
 
     public Dialog(Properties properties, FileWriter fileWriter) {
         this.properties = properties;
@@ -43,13 +48,12 @@ public class Dialog {
                 break;
         }
         User user = address.equals(Admin.ADMIN_EMAIL)? new Admin(): new User(address);
-        user.startView();
+        user.openCatalog();
         String result = null;
         do {
             result = process(user, end);
         }
         while(!result.equals(end));
-
 
     }
 
@@ -60,29 +64,101 @@ public class Dialog {
 
         do {
             System.out.println(error);
+            System.out.println("If you are Admin you can print A#<type - E or P>#<Book Title>#<Author>...#<Author> to add the book");
+            System.out.println("If you are Admin you can print L#<new location> to relocate the current book");
+            System.out.println("If you are Admin you can print M#<new description> to modify description of the current book");
+            System.out.println("To find a book print F#<book title>");
             System.out.println("To check the next page print \"NEXT\"");
             System.out.println("To check the previous page print \"PREV\"");
             System.out.println("To check the first page print \"START\"");
             System.out.println("Or type " + "\"" + end + "\"" + " if you want to end your session");
+
             error = "Wrong input";
             command = scanner.nextLine();
             if(command.equals(end)) return end;
+
+            //Adding book
+            if(command.startsWith("A")) {
+                String[] input = command.split("#");
+                int length = input.length;
+                if(length < 3 || (!input[1].equals("E") && !input[1].equals("P"))) {
+                    System.out.println("Wrong input");
+                    return "Not OK";
+                }
+                String type = input[1];
+                Type bookType = type.equals("E")? Type.DIGITAL: Type.PHYSICAL;
+                String title = input[2];
+                String[] authors = null;
+                if (length > 3) {
+                    authors = new String[length - 3];
+                    for(int i = 0; i < authors.length; i++) {
+                        authors[i] = input[i + 3];
+                    }
+                }
+                Book book = new Book(bookType, title, authors);
+                BookEntry currentEntry = new BookEntry(book);
+                user.addBookEntry(currentEntry);
+                return "OK";
+            }
+
+            //Relocating book
+            if(command.startsWith("L")) {
+                String[] input = command.split("#");
+                if (input.length > 1) {
+                    String location = input[1];
+                    if(user.getCatalog().getSelectedEntry() != null) {
+                        BookEntry currentEntry = user.getCatalog().getSelectedEntry();
+                        user.relocateBook(currentEntry.getBook(), location);
+                        return "OK";
+                    }
+                }
+                return "Not OK";
+            }
+
+            //Modifying description
+            if(command.startsWith("M")) {
+                String[] input = command.split("#");
+                if (input.length > 1) {
+                    String description = input[1];
+                    if(user.getCatalog().getSelectedEntry() != null) {
+                        BookEntry currentEntry = user.getCatalog().getSelectedEntry();
+                        user.modifyDescription(currentEntry.getBook(), description);
+                        return "OK";
+                    }
+                }
+                return "Not OK";
+            }
+
+            //Searching book
+            if(command.startsWith("F")) {
+                String[] input = command.split("#");
+                if (input.length > 1) {
+                    String title = input[1];
+                    user.searchBook(title);
+
+                    return "OK";
+                }
+                System.out.println("Wrong input");
+                return "Not OK";
+            }
+
+
         }
         while(!command.equals("NEXT") && !command.equals("PREV") && !command.equals("START"));
         switch(command) {
             case "NEXT":
-                user.next();
+                user.nextPage();
                 break;
             case "PREV":
-                user.prev();
+                user.prevPage();
                 break;
             case "START":
-                user.startView();
+                user.openCatalog();
                 break;
             default:
                 break;
         }
-        return "";
+        return "OK";
     }
 
     private String signIn(String end) {

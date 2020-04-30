@@ -1,4 +1,8 @@
-package by.pavka.task.task1;
+package by.pavka.task.task1.user;
+
+import by.pavka.task.task1.book.Book;
+import by.pavka.task.task1.book.BookEntry;
+import by.pavka.task.task1.book.Catalog;
 
 import java.util.Objects;
 
@@ -24,16 +28,28 @@ public class User {
         System.out.println("Only Admin can add BookEntries");
     }
 
-    public void startView() {
-        catalog.startView();
+    public void relocateBook(Book book, String location) {
+        System.out.println("Only Admin can relocate books");
     }
 
-    public void next() {
-        catalog.viewNextPage();
+    public void modifyDescription(Book book, String description) {
+        System.out.println("Only Admin can modify BookEntries");
     }
 
-    public void prev() {
-        catalog.viewPrevPage();
+    public BookEntry searchBook(String title) {
+        return catalog.searchBookEntry(title);
+    }
+
+    public void openCatalog() {
+        catalog.open();
+    }
+
+    public void nextPage() {
+        catalog.nextPage();
+    }
+
+    public void prevPage() {
+        catalog.prevPage();
     }
 
     @Override
@@ -54,6 +70,5 @@ public class User {
     public int hashCode() {
         return Objects.hash(email);
     }
-
 
 }

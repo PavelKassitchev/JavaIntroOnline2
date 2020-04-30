@@ -8,5 +8,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="com.google.code.gson:gson:2.8.6" level="project" />
+    <orderEntry type="library" exported="" name="javax.mail:mail:1.4.6" level="project" />
+    <orderEntry type="library" exported="" name="javax.activation:activation:1.1.1" level="project" />
+    <orderEntry type="library" exported="" name="com.sun.mail:smtp:1.6.2" level="project" />
   </component>
 </module>
