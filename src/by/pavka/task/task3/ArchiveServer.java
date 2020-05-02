@@ -49,12 +49,13 @@ public class ArchiveServer {
                     System.out.println("The client has gone");
                     return;
                 }
+                String userString = null;
                 if(reply.equalsIgnoreCase("IN")) {
-                    user = signIn(in, out);
+                    userString = signIn(in, out);
                 }
 
                 if(reply.equalsIgnoreCase("UP")) {
-                    user = signUp(in, out);
+                    userString = signUp(in, out);
                 }
 
             }
@@ -63,12 +64,12 @@ public class ArchiveServer {
             }
         }
 
-        private User signUp(BufferedReader in, BufferedWriter out) {
+        private String signUp(BufferedReader in, BufferedWriter out) {
             //TODO
             return null;
         }
 
-        private User signIn(BufferedReader in, BufferedWriter out) {
+        private String signIn(BufferedReader in, BufferedWriter out) {
             //TODO
             return null;
         }
