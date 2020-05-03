@@ -1,4 +1,6 @@
-package by.pavka.task.task3;
+package by.pavka.task.task3.person;
+
+import by.pavka.task.task3.Archive;
 
 import java.util.Objects;
 

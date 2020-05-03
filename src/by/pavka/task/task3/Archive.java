@@ -1,6 +1,7 @@
 package by.pavka.task.task3;
 
-import by.pavka.task.task3.user.User;
+import by.pavka.task.task3.person.Student;
+import by.pavka.task.task3.person.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,44 +52,58 @@ public enum Archive {
         return count.incrementAndGet();
     }
 
-    public void read(int studentId) {
+    public String read(int studentId) {
         Student student = getById(studentId);
         if(student != null) {
-            System.out.println(student + ", Average Mark is " + folder.get(student));
+            return student + ", Average Mark is " + folder.get(student);
         }
         else {
-            System.out.println("There is no Student with id = " + studentId);
+            return "There is no Student with id = " + studentId;
         }
     }
 
-    public void modifyMark(int studentId, double newMark) {
+    public String modifyMark(int studentId, double newMark) {
         Student student = getById(studentId);
         if(student != null) {
-            System.out.println(student + ", Average Mark is " + folder.get(student) + ", modified to " + newMark);
+            double oldMark = folder.get(student);
             folder.put(student, newMark);
             folderIsModified = true;
+            return student + ", Average Mark is " + oldMark + ", modified to " + newMark;
         }
         else {
-            System.out.println("There is no Student with id = " + studentId);
+            return "There is no Student with id = " + studentId;
         }
     }
 
-    public void addFile(Student student, double mark) {
-        System.out.println("File for " + student + " with Mark " + mark + " added to the Archive");
+    public String addFile(Student student, double mark) {
         folder.put(student, mark);
         folderIsModified = true;
+        return "File for " + student + " with Mark " + mark + " added to the Archive";
     }
 
-    public void addUser(User user) {
-        users.add(user);
-        authIsModified = true;
+    public boolean addUser(User user) {
+        if(users.add(user)) {
+            authIsModified = true;
+            return true;
+        }
+        return false;
     }
 
-    public void grantPermission(User user) {
-        if(users.contains(user)) {
+    public String grantPermission(User user) {
+        if(users.contains(user) && !user.canModify()) {
             user.setPermission();
             authIsModified = true;
+            return "Permission granted";
         }
+        return "Either user already has permission or doesn't exist";
+    }
+
+
+    public User getByLogin(String login) {
+        for(User u: users) {
+            if(u.getLogin().equals(login)) return u;
+        }
+        return null;
     }
 
     public void close() {
@@ -123,7 +138,7 @@ public enum Archive {
 
     private ConcurrentSkipListSet<User> loadAuth() {
         //TODO
-        return null;
+        return new ConcurrentSkipListSet<>();
     }
 
     private void writeAuth() {
