@@ -3,6 +3,8 @@ package by.pavka.task.task3;
 import by.pavka.task.task3.person.Student;
 import by.pavka.task.task3.person.User;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,7 +16,7 @@ public class ArchiveServer {
 
     private static ServerSocket server;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TransformerException, ParserConfigurationException {
         ExecutorService executorService = Executors.newFixedThreadPool(20);
         server = new ServerSocket(4004);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -68,12 +70,20 @@ public class ArchiveServer {
                 String userString = null;
                 if(reply.equalsIgnoreCase("IN")) {
                     userString = signIn(in, out);
+
+                    if(userString.equalsIgnoreCase("QUIT")) {
+                        return;
+                    }
                     String[] input = userString.split("#");
                     user = Archive.INSTANCE.getByLogin(input[0]);
                 }
 
                 if(reply.equalsIgnoreCase("UP")) {
                     userString = signUp(in, out);
+
+                    if(userString.equalsIgnoreCase("QUIT")) {
+                        return;
+                    }
                     String[] input = userString.split("#");
                     user = new User(input[0], input[1]);
                     if(input[0].equals("Admin")) {
@@ -195,7 +205,10 @@ public class ArchiveServer {
                         "To finish this session print QUIT" + '\n');
                 out.flush();
                 reply = in.readLine();
-                if(reply.isEmpty()) continue;
+
+                if(reply.equalsIgnoreCase("QUIT")) {
+                    return reply;
+                }
                 String[] input = reply.split("#");
                 if(input.length != 2) {
                     error = "Wrong input";
@@ -230,6 +243,11 @@ public class ArchiveServer {
                         "To finish this session print QUIT" + '\n');
                 out.flush();
                 reply = in.readLine();
+
+                if(reply.equalsIgnoreCase("QUIT")) {
+                    return reply;
+                }
+
                 String[] input = reply.split("#");
                 if(input.length != 2) {
                     error = "Wrong input";

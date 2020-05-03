@@ -1,8 +1,11 @@
 package by.pavka.task.task3;
 
+import by.pavka.task.task3.parser.ArchiveParser;
 import by.pavka.task.task3.person.Student;
 import by.pavka.task.task3.person.User;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -109,7 +112,7 @@ public enum Archive {
         return null;
     }
 
-    public void close() {
+    public void close() throws TransformerException, ParserConfigurationException {
         if(folderIsModified) {
            writeData();
         }
@@ -135,8 +138,8 @@ public enum Archive {
         return new AtomicInteger();
     }
 
-    private void writeData() {
-        //TODO
+    private void writeData() throws TransformerException, ParserConfigurationException {
+        ArchiveParser.writeFolder(folder, archiveLocation, count.get());
     }
 
     private ConcurrentSkipListSet<User> loadAuth() {
@@ -144,8 +147,8 @@ public enum Archive {
         return new ConcurrentSkipListSet<>();
     }
 
-    private void writeAuth() {
-        //TODO
+    private void writeAuth() throws TransformerException, ParserConfigurationException {
+        ArchiveParser.writeAuth(users, authLocation);
     }
 
 

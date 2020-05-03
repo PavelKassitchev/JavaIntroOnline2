@@ -31,6 +31,12 @@ public class ArchiveClient {
                 out.write(reply + '\n');
                 out.flush();
                 if(reply.equalsIgnoreCase("QUIT")) {
+//
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                     socket.close();
                 }
             }
