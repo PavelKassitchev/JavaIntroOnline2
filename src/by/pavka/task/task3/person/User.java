@@ -18,6 +18,11 @@ public class User implements Comparable<User>{
         canModify = false;
     }
 
+    public User(String login, int passHash, boolean canModify) {
+        this.login = login;
+        this.passHash = passHash;
+        this.canModify = canModify;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -89,5 +94,14 @@ public class User implements Comparable<User>{
     @Override
     public int compareTo(User o) {
         return login.compareTo(o.login);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", passHash=" + passHash +
+                ", canModify=" + canModify +
+                '}';
     }
 }

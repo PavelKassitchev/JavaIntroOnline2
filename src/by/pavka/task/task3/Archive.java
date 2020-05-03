@@ -3,6 +3,7 @@ package by.pavka.task.task3;
 import by.pavka.task.task3.parser.ArchiveParser;
 import by.pavka.task.task3.person.Student;
 import by.pavka.task.task3.person.User;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -35,9 +36,8 @@ public enum Archive {
                 count = new AtomicInteger();
                 folder = new ConcurrentHashMap<>();
             }
-        } catch (IOException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
-            System.out.println("archive.xml cannot be created");
         }
         try {
             if(!authLocation.createNewFile()) {
@@ -46,7 +46,7 @@ public enum Archive {
             else {
                 users = new ConcurrentSkipListSet<>();
             }
-        } catch (IOException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e ) {
             e.printStackTrace();
         }
 
@@ -128,23 +128,21 @@ public enum Archive {
         return null;
     }
 
-    private ConcurrentHashMap<Student, Double> loadFolder() {
-        //TODO
-        return new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Student, Double> loadFolder() throws IOException, SAXException, ParserConfigurationException {
+        return new ConcurrentHashMap<>(ArchiveParser.loadStudents(archiveLocation));
     }
 
-    private AtomicInteger updateCount() {
-        //TODO
-        return new AtomicInteger();
+    private AtomicInteger updateCount() throws ParserConfigurationException, SAXException, IOException {
+        return new AtomicInteger(ArchiveParser.getCount(archiveLocation));
     }
 
     private void writeData() throws TransformerException, ParserConfigurationException {
         ArchiveParser.writeFolder(folder, archiveLocation, count.get());
     }
 
-    private ConcurrentSkipListSet<User> loadAuth() {
-        //TODO
-        return new ConcurrentSkipListSet<>();
+    private ConcurrentSkipListSet<User> loadAuth() throws IOException, SAXException, ParserConfigurationException {
+        ConcurrentSkipListSet<User> set = new ConcurrentSkipListSet<>(ArchiveParser.loadUsers(authLocation));
+        return set;
     }
 
     private void writeAuth() throws TransformerException, ParserConfigurationException {
