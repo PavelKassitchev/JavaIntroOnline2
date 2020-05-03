@@ -4,6 +4,8 @@ import by.pavka.task.task3.Archive;
 
 import java.util.Objects;
 
+//This class describes Students whose files are presented in the Archive
+
 public class Student {
 
 

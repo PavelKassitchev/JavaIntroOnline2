@@ -22,7 +22,6 @@ public class ArchiveServer {
 
         while(!server.isClosed()) {
 
-            System.out.println("New Cycle");
             //Shutting down the server from server console
             if(br.ready()) {
                 String serverCommand = br.readLine();
@@ -33,7 +32,6 @@ public class ArchiveServer {
                     break;
                 }
             }
-
 
             Socket socket = server.accept();
             executorService.execute(new ClientDialog(socket));
@@ -46,6 +44,7 @@ public class ArchiveServer {
     }
 
 
+    //Main dialog thread
     private static class ClientDialog implements Runnable {
 
         private Socket socket;
@@ -106,6 +105,7 @@ public class ArchiveServer {
             }
         }
 
+        //After authorization the client is allowed to read files, modify or add them, give other users' permissions...
         private String workInArchive(BufferedReader in, BufferedWriter out, User user) throws IOException {
             String error = "";
             String reply = "";
@@ -184,6 +184,7 @@ public class ArchiveServer {
 
         }
 
+        //Sign Up for new users
         private String signUp(BufferedReader in, BufferedWriter out) throws IOException {
             String error = "";
             String reply = "";
@@ -219,6 +220,7 @@ public class ArchiveServer {
             return reply;
         }
 
+        //Sign in for existing users
         private String signIn(BufferedReader in, BufferedWriter out) throws IOException {
             String error = "";
             String reply = "";
@@ -250,6 +252,7 @@ public class ArchiveServer {
             return reply;
         }
 
+        //First choice: either sign in or sign up
         private String authen(BufferedReader in, BufferedWriter out) throws IOException {
             String error = "";
             String reply = "";
@@ -265,15 +268,4 @@ public class ArchiveServer {
         }
     }
 
-    private static class SimplestDialog implements Runnable {
-        Socket socket;
-        public SimplestDialog(Socket socket) {
-            this.socket = socket;
-        }
-
-        @Override
-        public void run() {
-
-        }
-    }
 }

@@ -4,6 +4,8 @@ import by.pavka.task.task3.Archive;
 
 import java.util.Objects;
 
+//This class presents the Archive users
+
 public class User implements Comparable<User>{
 
     private String login;
@@ -31,6 +33,7 @@ public class User implements Comparable<User>{
         return Objects.hash(login, passHash);
     }
 
+    //This method gives the user permission to modify students' files, but not add students
     public void setPermission() {
         canModify = true;
     }
@@ -54,6 +57,7 @@ public class User implements Comparable<User>{
         return Archive.INSTANCE.read(studentId);
     }
 
+    //This method invokes Archive method to modify the student's file
     public String modifyMark(int studentId, double mark) {
         if(!canModify) {
             return "Only Teachers and Admin can do it";
@@ -63,6 +67,7 @@ public class User implements Comparable<User>{
         }
     }
 
+    //This action is allowed to Admin only
     public String addFile(Student student, double mark) {
         if(login.equals("Admin")) {
             return Archive.INSTANCE.addFile(student, mark);
@@ -70,6 +75,7 @@ public class User implements Comparable<User>{
         else return "Only Admin can do it";
     }
 
+    //This method lets Admin grant permissions to other users to modify students' files
     public String grantPermission (User user) {
         if(login.equals("Admin")) {
             return Archive.INSTANCE.grantPermission(user);

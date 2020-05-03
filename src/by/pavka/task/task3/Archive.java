@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//This Singleton keeps Students' Files and Users' Authentication data
 public enum Archive {
     INSTANCE;
 
@@ -19,7 +20,7 @@ public enum Archive {
     private boolean authIsModified;
 
     private final File archiveLocation = new File("archive.xml");
-    private final File auth = new File("auth.xml");
+    private final File authLocation = new File("auth.xml");
 
     Archive() {
         try {
@@ -36,7 +37,7 @@ public enum Archive {
             System.out.println("archive.xml cannot be created");
         }
         try {
-            if(!auth.createNewFile()) {
+            if(!authLocation.createNewFile()) {
                 users = loadAuth();
             }
             else {
@@ -52,6 +53,7 @@ public enum Archive {
         return count.incrementAndGet();
     }
 
+    //Read student file
     public String read(int studentId) {
         Student student = getById(studentId);
         if(student != null) {
@@ -81,6 +83,7 @@ public enum Archive {
         return "File for " + student + " with Mark " + mark + " added to the Archive";
     }
 
+    //Add user rights to a new user
     public boolean addUser(User user) {
         if(users.add(user)) {
             authIsModified = true;
