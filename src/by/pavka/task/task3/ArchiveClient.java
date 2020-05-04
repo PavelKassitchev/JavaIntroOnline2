@@ -3,11 +3,12 @@ package by.pavka.task.task3;
 import java.io.*;
 import java.net.Socket;
 
+//Client should be launched after Server
 public class ArchiveClient {
 
 
     public static void main(String[] args) throws IOException {
-        ArchiveClient client = new ArchiveClient();;
+        ArchiveClient client = new ArchiveClient();
         client.communicate();
     }
 
@@ -31,13 +32,9 @@ public class ArchiveClient {
                 out.write(reply + '\n');
                 out.flush();
                 if(reply.equalsIgnoreCase("QUIT")) {
-//
-//                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+
                     socket.close();
+                    reader.close();
                 }
             }
         }

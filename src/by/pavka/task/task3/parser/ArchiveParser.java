@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public class ArchiveParser {
 
+    //The method saves the map with students' files in xml
     public static void writeFolder(Map<Student, Double> map, File file, int count) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -32,30 +33,16 @@ public class ArchiveParser {
         Document doc = documentBuilder.newDocument();
         Element rootElement = doc.createElement("folder");
         doc.appendChild(rootElement);
-
-        Element counter = doc.createElement("counter");
-        rootElement.appendChild(counter);
-        counter.setAttribute("number", String.valueOf(count));
+        rootElement.setAttribute("counter", String.valueOf(count));
 
         for (Map.Entry<Student, Double> entry: map.entrySet()){
             Element studentFile = doc.createElement("file");
             rootElement.appendChild(studentFile);
+            studentFile.setAttribute("id", String.valueOf(entry.getKey().getId()));
+            studentFile.setAttribute("name", entry.getKey().getName());
+            studentFile.setAttribute("address", entry.getKey().getAddress());
+            studentFile.setAttribute("average_mark", entry.getValue().toString());
 
-            Element id = doc.createElement("id");
-            id.appendChild(doc.createTextNode(String.valueOf(entry.getKey().getId())));
-            studentFile.appendChild(id);
-
-            Element name = doc.createElement("name");
-            name.appendChild(doc.createTextNode(entry.getKey().getName()));
-            studentFile.appendChild(name);
-
-            Element address = doc.createElement("address");
-            address.appendChild(doc.createTextNode(entry.getKey().getAddress()));
-            studentFile.appendChild(address);
-
-            Element mark = doc.createElement("av_mark");
-            mark.appendChild(doc.createTextNode(entry.getValue().toString()));
-            studentFile.appendChild(mark);
         }
 
         TransformerFactory transformerFactory =TransformerFactory.newInstance();
@@ -66,6 +53,7 @@ public class ArchiveParser {
         transformer.transform(domSource, result);
     }
 
+    //This method saves authentication set in xml
     public static void writeAuth(Set<User> users, File file) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -90,6 +78,7 @@ public class ArchiveParser {
         transformer.transform(domSource, result);
     }
 
+    //The method restores set of users from xml
     public static Set<User> loadUsers(File file) throws ParserConfigurationException, IOException, SAXException {
 
         Set<User> userSet = new ConcurrentSkipListSet<User>();
@@ -107,15 +96,17 @@ public class ArchiveParser {
         return userSet;
     }
 
+    //The method restores static counter from xml
     public static int getCount(File file) throws IOException, SAXException, ParserConfigurationException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);
-        Node rootElement = document.getDocumentElement();
-        Element count = (Element)rootElement.getFirstChild();
-        return Integer.parseInt(count.getAttribute("number"));
+        Element rootElement = document.getDocumentElement();
+
+        return Integer.parseInt(rootElement.getAttribute("counter"));
     }
 
+    //This method restores map of students' files from xml
     public static Map<Student, Double> loadStudents(File file) throws ParserConfigurationException, IOException, SAXException {
 
         Map<Student, Double> map = new ConcurrentHashMap<Student, Double>();
@@ -123,10 +114,20 @@ public class ArchiveParser {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);
-        Node rootElement = document.getDocumentElement();
+        Element rootElement = document.getDocumentElement();
         NodeList files = rootElement.getChildNodes();
-
-        //TODO
+        for(int i = 0; i < files.getLength(); i++) {
+            Element studentFile = (Element)files.item(i);
+            int id = Integer. parseInt(studentFile.getAttribute("id"));
+            String name = studentFile.getAttribute("name");
+            String address = studentFile.getAttribute("address");
+            double mark = Double.parseDouble(studentFile.getAttribute("average_mark"));
+            Student student = new Student();
+            student.setId(id);
+            student.setName(name);
+            student.setAddress(address);
+            map.put(student, mark);
+        }
 
         return map;
     }
@@ -144,16 +145,4 @@ public class ArchiveParser {
         return null;
     }
 
-    private static String getTagValue(String tag, Element element) {
-        NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
-        Node node = (Node) nodeList.item(0);
-        return node.getNodeValue();
-    }
-
-    public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
-        Set<User> users = loadUsers(new File("auth.xml"));
-        for(User u: users) {
-            System.out.println(u);
-        }
-    }
 }

@@ -11,13 +11,15 @@ import java.net.Socket;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+//Server should be launched first
 public class ArchiveServer {
 
     private static ServerSocket server;
 
     public static void main(String[] args) throws IOException, TransformerException, ParserConfigurationException {
-        ExecutorService executorService = Executors.newFixedThreadPool(20);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         server = new ServerSocket(4004);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Server Socket and Command Console created");
@@ -29,8 +31,8 @@ public class ArchiveServer {
                 String serverCommand = br.readLine();
                 if(serverCommand.equalsIgnoreCase("EXIT")) {
                     System.out.println("Server is shutting down...");
-                    Archive.INSTANCE.close();
-                    server.close();
+//                    Archive.INSTANCE.close();
+//                    server.close();
                     break;
                 }
             }
@@ -41,7 +43,14 @@ public class ArchiveServer {
         }
 
         executorService.shutdown();
+        try {
+            executorService.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("Server is stopped");
+        Archive.INSTANCE.close();
+        server.close();
 
     }
 
