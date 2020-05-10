@@ -14,64 +14,65 @@ public class Pier implements Runnable {
         return port;
     }
 
-    public void load(Ship ship) {
-        port.reduceStock(ship.getCapacity());
-        ship.setLoad(ship.getCapacity());
-    }
-    public void unload(Ship ship) {
-        port.addStock(ship.getLoad());
-        ship.setLoad(0);
-    }
 
     @Override
     public String toString() {
-        return "Pier No. " + id;
+        return "Pier No." + id;
     }
 
     @Override
-        public void run() {
-            while(true) {
-                System.out.println(this + " is ready to work");
+    public void run() {
+        while (true) {
+            Ship ship = null;
+            boolean load;
+            synchronized (port) {
+                load = port.commandToLoad();
 
-                if(port.commandToLoad()) {
-                    Ship ship = port.getShipsToLoad().poll();
-                    if(ship != null) {
+                if (load) {
+                    ship = port.getShipsToLoad().poll();
+                    if (ship != null) {
                         System.out.println(this + " starts loading " + ship);
-                        port.reduceStock(ship.getCapacity());
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println(this + " has loaded " + ship);
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        int cargo = ship.getCapacity();
+                        port.reduceFutureStock(cargo);
+                        port.reduceStock(cargo);
+                        System.out.println("Cargo has left warehouse. Current Port Stock is " + port.getCurrentStock());
                     }
-                }
-                else {
-                    Ship ship = port.getShipsToUnload().poll();
-                    if(ship != null) {
+                } else {
+                    ship = port.getShipsToUnload().poll();
+                    if (ship != null) {
                         System.out.println(this + " starts unloading " + ship);
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println(this + " has unloaded " + ship);
-                        port.addStock(ship.getLoad());
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        int cargo = ship.getLoad();
+                        port.addFutureStock(cargo);
                     }
-
                 }
             }
 
+            if (load && ship != null) {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ship.setLoad(ship.getCapacity());
+                System.out.println(this + " has loaded " + ship);
+                continue;
+            }
+            if (!load && ship != null) {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ship.setLoad(0);
+                System.out.println(this + " has unloaded " + ship);
+                synchronized (port) {
+                    port.addStock(ship.getCapacity());
+                    System.out.println("Cargo has been placed in warehouse. Current Port Stock is " + port.getCurrentStock());
+                }
+
+            }
+
         }
+    }
 
 }

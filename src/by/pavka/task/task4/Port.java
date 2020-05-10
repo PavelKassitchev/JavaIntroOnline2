@@ -23,19 +23,24 @@ public class Port {
     private Queue<Ship> shipsToUnload;
 
     private int capacity;
-    private int stock;
+    private int currentStock;
+    private int futureStock;
+
 
     public Port(int numberOfPiers, int maxShipsOnRaid, int capacity, int initialStock) {
 
         shipsToLoad = new ArrayBlockingQueue<>(maxShipsOnRaid);
         shipsToUnload = new ArrayBlockingQueue<>(maxShipsOnRaid);
         this.capacity = capacity;
-        this.stock = initialStock > capacity? capacity: initialStock;
+        currentStock = initialStock > capacity? capacity: initialStock;
+        futureStock = currentStock;
 
         piers = new Pier[numberOfPiers];
         for(int i = 0; i < numberOfPiers; i++) {
             piers[i] = new Pier(this, i + 1);
+            System.out.println(piers[i] + " has been built");
             new Thread(piers[i]).start();
+            System.out.println(piers[i] + " has began to work");
         }
 
     }
@@ -48,39 +53,80 @@ public class Port {
         return shipsToUnload;
     }
 
-    public synchronized int getStock() {
-        return stock;
+    public synchronized int getCurrentStock() {
+        return currentStock;
     }
 
-    public synchronized void setStock(int stock) {
-        this.stock = stock;
+    public synchronized void setCurrentStock(int currentStock) {
+        this.currentStock = currentStock;
+    }
+
+    public int getFutureStock() {
+        return futureStock;
+    }
+
+    public void setFutureStock(int futureStock) {
+        this.futureStock = futureStock;
     }
 
     public synchronized void addStock(int add) {
-        stock += add;
+        currentStock += add;
     }
 
     public synchronized void reduceStock(int reduce) {
-        stock -= reduce;
+        currentStock -= reduce;
     }
 
-    public synchronized boolean commandToLoad() {
+    public synchronized void addFutureStock(int add) {
+        futureStock += add;
+    }
+
+    public synchronized void reduceFutureStock(int reduce) {
+        futureStock -= reduce;
+    }
+
+
+    public boolean commandToLoad() {
         Random random = new Random();
-        //TODO
+
+        int nextCargoToLoad = 0;
+        int nextCargoToUnload = 0;
+        if(!shipsToLoad.isEmpty()) nextCargoToLoad = shipsToLoad.peek().getCapacity();
+        if(!shipsToUnload.isEmpty()) nextCargoToUnload = shipsToUnload.peek().getLoad();
+
+        if(currentStock > capacity - nextCargoToUnload || futureStock > capacity - nextCargoToUnload) return true;
+        if(currentStock < nextCargoToLoad || futureStock < nextCargoToLoad) return false;
+
+        if(futureStock >= capacity / 2 && shipsToLoad.size() > shipsToUnload.size()) return true;
+        if(futureStock <= capacity / 2 && shipsToLoad.size() < shipsToLoad.size()) return false;
+
         return random.nextBoolean();
     }
 
     public void generateShips() {
         Random random = new Random();
         while(true) {
-            if(random.nextBoolean()) {
-                shipsToLoad.offer(new Ship(10));
-            }
-            else shipsToUnload.offer(new Ship(10, true));
 
-            System.out.println("Ships to load - " + shipsToLoad.size());
-            System.out.println("Ships to unload - " + shipsToUnload.size());
-            System.out.println("Port stock = " + stock);
+            if (random.nextBoolean()) {
+
+                Ship ship = new Ship(10 + random.nextInt(10));
+                synchronized (this) {
+                    shipsToLoad.offer(ship);
+                    System.out.println("New " + ship + " came to load, total quantity to load is " + shipsToLoad.size() +
+                            ", total quantity to unload is " + shipsToUnload.size());
+                }
+
+            } else {
+
+                Ship ship = new Ship(10 + random.nextInt(10), true);
+                synchronized (this) {
+                    shipsToUnload.offer(ship);
+                    System.out.println("New " + ship + "  came to unload, total quantity to unload is " + shipsToUnload.size() +
+                            ", total quantity to load is " + shipsToLoad.size());
+                }
+
+            }
+
 
             try {
                 Thread.sleep(1000);
